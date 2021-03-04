@@ -1,0 +1,28 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+
+<h1>Opret bruger</h1>
+
+<div>
+    <form method="POST">
+        <div class="form-group">
+            <label for="username">Brugernavn</label>
+            <input type="text" class="form-control" id="username" name="username" placeholder="Brugernavn" />
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="text" class="form-control" id="email" name="email" placeholder="Email" />
+        </div>
+        <div class="form-group">
+            <label for="password">Kodeord</label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="Kodeord" />
+        </div>
+        <button type="submit" class="btn btn-primary">Register</button>
+        @ViewBag.Message
+    </form>
+    <a href="/">Har du allerede en bruger, log ind her</a>
+</div>

@@ -1,0 +1,32 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+
+<div>
+    <form method="POST">
+        <div class="form-group">
+            <label for="itemTitle">Titel</label>
+            <input type="text" class="form-control" id="itemTitel" name="itemTitle" placeholder="Titel" />
+        </div>
+        <div class="form-group">
+            <label for="itemDescription">Beskrivelse</label>
+            <input type="text" class="form-control" id="itemDescription" name="itemDescription" placeholder="Beskrivelse" />
+        </div>
+        <button type="submit" class="btn-primary">Opret todo-ting</button>
+        @ViewBag.Message
+    </form>
+</div>
+
+@foreach (TodoItem todoItem in ViewBag.Todos)
+{
+    <h2>
+        @Html.DisplayFor(m => todoItem.Title)
+    </h2>
+    <h3>
+        @Html.DisplayFor(m => todoItem.Description)
+    </h3>
+    <a href="/Home/DeleteTodo/@todoItem.Id" onclick="return confirm('Er du sikker?')">Slet</a>
+}
