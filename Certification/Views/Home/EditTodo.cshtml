@@ -1,0 +1,21 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+
+<div>
+    <form method="POST">
+        <div class="form-group">
+            <label for="itemTitle">Titel</label>
+            <input type="text" class="form-control" id="itemTitel" name="itemTitle" placeholder="Titel" value="@ViewBag.Title" />
+        </div>
+        <div class="form-group">
+            <label for="itemDescription">Beskrivelse</label>
+            <input type="text" class="form-control" id="itemDescription" name="itemDescription" placeholder="Beskrivelse" value="@ViewBag.Description" />
+        </div>
+        <button type="submit" class="btn-primary">Rediger todo-ting</button>
+        @ViewBag.Message
+    </form>
+</div>

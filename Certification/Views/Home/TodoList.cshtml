@@ -20,13 +20,18 @@
     </form>
 </div>
 
-@foreach (TodoItem todoItem in ViewBag.Todos)
-{
-    <h2>
-        @Html.DisplayFor(m => todoItem.Title)
-    </h2>
-    <h3>
-        @Html.DisplayFor(m => todoItem.Description)
-    </h3>
-    <a href="/Home/DeleteTodo/@todoItem.Id" onclick="return confirm('Er du sikker?')">Slet</a>
-}
+<ul>
+    @foreach (TodoItem todoItem in ViewBag.Todos)
+    {
+        <li>
+            <h2 style="display: inline-block">
+                @Html.DisplayFor(m => todoItem.Title)
+            </h2>
+            <h4>
+                @Html.DisplayFor(m => todoItem.Description)
+            </h4>
+            <a href="/Home/DeleteTodo/@todoItem.Id" style="display: inline-block" onclick="return confirm('Er du sikker?')">Slet</a>
+            <a href="/Home/EditTodo/@todoItem.Id">Rediger</a>
+        </li>
+    }
+</ul>

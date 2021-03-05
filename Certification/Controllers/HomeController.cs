@@ -45,6 +45,7 @@ namespace Certification.Controllers
                 {
                     //Er logget ind
                     HttpContext.Session.SetInt32("userId", login.Id);
+                    HttpContext.Session.SetString("username", login.Username);
                     return Redirect("/home/todolist");
                 }
                 else ViewBag.Message = "Password er forkert"; //Password er forkert
@@ -143,6 +144,96 @@ namespace Certification.Controllers
             _todoContext.TodoItem.Remove(todoItem);
             _todoContext.SaveChanges();
             return Redirect("/Home/TodoList");
+        }
+
+
+        [HttpGet]
+        public IActionResult EditTodo(int id)
+        {
+            var userId = HttpContext.Session.GetInt32("userId");
+            if (userId == null)
+            {
+                return Redirect("/");
+            }
+
+            ViewBag.userId = userId;
+            var todos = _todoContext.TodoItem.SingleOrDefault(t => t.Id == id && t.loginId == userId);
+
+            ViewBag.Title = _provider.Unprotect(todos.Title);
+            ViewBag.Description = _provider.Unprotect(todos.Description);
+
+            return View();
+        }
+
+
+        [HttpPost]
+        public IActionResult EditTodo(string itemTitle, string itemDescription)
+        {
+            var userId = HttpContext.Session.GetInt32("userId");
+            if (userId == null)
+            {
+                return Redirect("/");
+            }
+            var value = HttpContext.Request.Path.Value.Split("/")[3];
+            var todos = _todoContext.TodoItem.SingleOrDefault(t => t.Id == Int32.Parse(value) && t.loginId == userId);
+
+            if(todos == null)
+            {
+                return Redirect("/Home/TodoList");
+            }
+            todos.Title = _provider.Protect(itemTitle);
+            todos.Description = _provider.Protect(itemDescription);
+            _todoContext.TodoItem.Update(todos);
+            _todoContext.SaveChanges();
+            return Redirect("/Home/TodoList");
+        }
+
+
+        [HttpGet]
+        public IActionResult Profile()
+        {
+            var userId = HttpContext.Session.GetInt32("userId");
+            if (userId == null)
+            {
+                return Redirect("/");
+            }
+
+            ViewBag.userId = userId;
+            var login = _todoContext.Login.SingleOrDefault(t => t.Id == userId);
+
+            ViewBag.Username = login.Username;
+            ViewBag.Email = login.Email;
+
+            return View();
+        }
+
+
+        [HttpPost]
+        public IActionResult Profile(string username, string email, string password)
+        {
+            var userId = HttpContext.Session.GetInt32("userId");
+            if (userId == null)
+            {
+                return Redirect("/");
+            }
+
+            var login = _todoContext.Login.SingleOrDefault(t => t.Id == userId);
+
+            if (login == null)
+            {
+                return Redirect("/Home/Profile");
+            }
+            login.Username = username;
+            login.Email = email;
+            if(password != null)
+            {
+                login.Password = BC.HashPassword(password);
+            }
+            
+            _todoContext.Login.Update(login);
+            _todoContext.SaveChanges();
+            ViewBag.message = "Ændringer er blevet gemt";
+            return View();
         }
 
 
